@@ -1,0 +1,11 @@
+{
+    "_id": 1,
+    "course_code": "CS101",
+    "course_name": "Introduction to Computer Science",
+    "credits": 3,
+    "instructor": {
+      "name": "John Smith",
+      "department": "Computer Science",
+      "office": "Room 123"
+ }
+}

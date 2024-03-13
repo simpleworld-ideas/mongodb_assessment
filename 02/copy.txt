@@ -1,0 +1,32 @@
+app.post('/users', async function (req, res) {
+    
+        const result = await db.collection("users").insertOne({
+            'email': req.body.email,
+            'password': await bcrypt.hash(req.body.password, 12)
+        })
+        res.json({
+            "message": "Success",
+            "result": result
+        })
+    })
+
+    app.post('/login', async (req, res) => {
+        const { email, password } = req.body;
+
+console.log("email here", email)
+console.log("password", password)
+
+        if (!email || !password) {
+          return res.status(400).json({ message: 'Email and password are required' });
+        }
+        const user = await db.collection('users').findOne({ email: email });
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+          return res.status(401).json({ message: 'Invalid password' });
+        }
+        const accessToken = generateAccessToken(user._id, user.email);
+        res.json({ accessToken: accessToken });
+      });
